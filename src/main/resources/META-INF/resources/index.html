@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acortador de Enlaces Reactivo con Redis</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+    <div class="contenedor">
+        <header>
+            <h1>⚡ Acortador de Enlaces Redis</h1>
+            <p>Implementación Premium de Redis (Key-Value con TTL, Sorted Sets, Hashes y Pub/Sub) en Quarkus</p>
+        </header>
+
+        <div class="grid-principal">
+            
+            <!-- Panel Izquierdo: Crear y Analítica Individual -->
+            <div class="seccion-izquierda">
+                
+                <!-- Tarjeta de Crear Enlace -->
+                <div class="tarjeta" style="margin-bottom: 2rem;">
+                    <h2 class="titulo-tarjeta">🔗 Acortar un Enlace</h2>
+                    <form id="formulario-acortar">
+                        <div class="grupo-formulario">
+                            <label for="urlOriginal">URL Original (Destino):</label>
+                            <input type="url" id="urlOriginal" class="control-input" placeholder="https://ejemplo.com/pagina/larga/busqueda" required>
+                        </div>
+                        <div class="grupo-formulario">
+                            <label for="tiempoVida">Tiempo de Vida / Expiración (Segundos - Opcional):</label>
+                            <input type="number" id="tiempoVida" class="control-input" placeholder="Ej. 60 (para que venza en 1 minuto)" min="1">
+                        </div>
+                        <button type="submit" class="btn-premium">⚡ Acortar Enlace</button>
+                    </form>
+
+                    <div id="resultado" class="resultado-enlace" style="display: none;">
+                        <div class="resultado-texto">
+                            <span style="color: var(--text-secondary); font-size: 0.85rem; display: block;">Enlace corto generado:</span>
+                            <a id="enlaceCorto" href="#" target="_blank">http://localhost:8080/xyz123</a>
+                        </div>
+                        <div>
+                            <button id="btnCopiar" class="btn-copiar">Copiar</button>
+                            <button id="btnProbar" class="btn-copiar" style="background: var(--accent-gradient); margin-left: 0.5rem;">Probar Clic</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta de Consulta de Analíticas -->
+                <div class="tarjeta">
+                    <h2 class="titulo-tarjeta">📊 Métricas por Enlace (Redis Hashes)</h2>
+                    <div class="grupo-formulario" style="display: flex; gap: 0.75rem;">
+                        <input type="text" id="codigoBuscar" class="control-input" placeholder="Código corto (Ej: abc123)" style="flex: 1;">
+                        <button id="btnBuscarAnaliticas" class="btn-premium" style="width: auto; padding: 0.75rem 1.5rem;">Consultar</button>
+                    </div>
+
+                    <div id="metricas-panel" style="display: none; margin-top: 1.5rem;">
+                        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: #a78bfa;">
+                            Clics Totales: <span id="clicks-totales" style="font-weight: 800;">0</span>
+                        </div>
+                        
+                        <!-- Barra Chrome -->
+                        <div class="barra-navegador">
+                            <div class="barra-info">
+                                <span>Chrome</span>
+                                <span id="porc-chrome">0% (0 clics)</span>
+                            </div>
+                            <div class="barra-progreso">
+                                <div id="relleno-chrome" class="barra-relleno" style="background-color: #10b981;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Barra Firefox -->
+                        <div class="barra-navegador">
+                            <div class="barra-info">
+                                <span>Firefox</span>
+                                <span id="porc-firefox">0% (0 clics)</span>
+                            </div>
+                            <div class="barra-progreso">
+                                <div id="relleno-firefox" class="barra-relleno" style="background-color: #f97316;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Barra Safari -->
+                        <div class="barra-navegador">
+                            <div class="barra-info">
+                                <span>Safari</span>
+                                <span id="porc-safari">0% (0 clics)</span>
+                            </div>
+                            <div class="barra-progreso">
+                                <div id="relleno-safari" class="barra-relleno" style="background-color: #3b82f6;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Barra Edge -->
+                        <div class="barra-navegador">
+                            <div class="barra-info">
+                                <span>Edge</span>
+                                <span id="porc-edge">0% (0 clics)</span>
+                            </div>
+                            <div class="barra-progreso">
+                                <div id="relleno-edge" class="barra-relleno" style="background-color: #06b6d4;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Barra Otros -->
+                        <div class="barra-navegador">
+                            <div class="barra-info">
+                                <span>Otros</span>
+                                <span id="porc-otros">0% (0 clics)</span>
+                            </div>
+                            <div class="barra-progreso">
+                                <div id="relleno-otros" class="barra-relleno" style="background-color: #6b7280;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Panel Derecho: Live Stream y Leaderboard Global -->
+            <div class="seccion-derecha">
+
+                <!-- Tarjeta Leaderboard Global (Sorted Set) -->
+                <div class="tarjeta" style="margin-bottom: 2rem;">
+                    <h2 class="titulo-tarjeta">🏆 Top Enlaces Más Visitados (ZSets)</h2>
+                    <ul id="lista-ranking" class="lista-ranking">
+                        <!-- El ranking se cargará dinámicamente -->
+                        <li style="color: var(--text-secondary); text-align: center; padding: 1rem;">No hay clics registrados aún.</li>
+                    </ul>
+                </div>
+
+                <!-- Tarjeta Live Click Stream (Pub/Sub) -->
+                <div class="tarjeta">
+                    <h2 class="titulo-tarjeta">📡 Flujo de Actividad en Vivo (Pub/Sub)</h2>
+                    <div id="contenedor-stream" class="contenedor-stream">
+                        <!-- Los clics en vivo aparecerán aquí mediante SSE -->
+                        <div style="color: var(--text-secondary); text-align: center; padding: 2rem;">Esperando eventos de clics...</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Contenedor para notificaciones de error (Rate Limiter) -->
+    <div id="toast" class="toast-error" style="display: none;">
+        ¡Límite de peticiones excedido!
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
