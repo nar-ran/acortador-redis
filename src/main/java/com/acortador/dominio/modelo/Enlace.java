@@ -2,11 +2,10 @@ package com.acortador.dominio.modelo;
 
 import java.time.LocalDateTime;
 
-// Representa un enlace acortado dentro del dominio de la aplicación.
 public class Enlace {
     private String codigo;
     private String urlOriginal;
-    private Long tiempoVidaSegundos; // TTL opcional
+    private Long tiempoVidaSegundos;
     private LocalDateTime fechaCreacion;
 
     public Enlace() {
@@ -20,7 +19,6 @@ public class Enlace {
         this.fechaCreacion = LocalDateTime.now();
     }
 
-    // Verifica si el enlace tiene un tiempo de expiración definido.
     public boolean tieneExpiracion() {
         return tiempoVidaSegundos != null && tiempoVidaSegundos > 0;
     }

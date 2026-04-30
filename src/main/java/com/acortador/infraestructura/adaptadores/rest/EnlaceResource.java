@@ -10,7 +10,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.Map;
 
-// Endpoint principal para crear enlaces y consultar analíticas y rankings.
 @Path("/api/enlaces")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -52,7 +51,6 @@ public class EnlaceResource {
         return Response.ok(ranking).build();
     }
 
-    // DTOs auxiliares
     public record CrearEnlaceRequest(String urlOriginal, Long tiempoVidaSegundos) {}
     public record EnlaceRespuesta(String codigo, String urlOriginal, String urlCorta, Long tiempoVidaSegundos) {}
 }

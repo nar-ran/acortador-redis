@@ -10,8 +10,6 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Singleton;
 
-// Configuración CDI para instanciar manualmente los servicios de la capa de aplicación.
-// Esto mantiene las clases de la capa de aplicación limpias de anotaciones del framework.
 @Dependent
 public class BeanConfiguration {
 

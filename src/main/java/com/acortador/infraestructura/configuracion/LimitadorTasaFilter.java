@@ -10,7 +10,6 @@ import jakarta.ws.rs.core.Response;
 import java.util.Map;
 import org.jboss.resteasy.reactive.server.ServerRequestFilter;
 
-// Filtro HTTP que intercepta la creación de enlaces y aplica un Rate Limit de 5 peticiones por minuto.
 public class LimitadorTasaFilter {
 
     private final ValueCommands<String, Long> comandosValor;
@@ -27,21 +26,17 @@ public class LimitadorTasaFilter {
         String ruta = contexto.getUriInfo().getPath();
         String metodo = contexto.getMethod();
 
-        // Aplicamos el límite únicamente para la creación de enlaces cortos (POST /api/enlaces)
         if ("api/enlaces".equals(ruta) || "/api/enlaces".equals(ruta)) {
             if ("POST".equalsIgnoreCase(metodo)) {
                 String ipCliente = obtenerIpCliente(contexto);
                 String claveLimite = "limite:ip:" + ipCliente;
 
-                // Incrementa de forma atómica el número de peticiones de esa IP
                 Long peticiones = comandosValor.incr(claveLimite);
 
-                // Si es la primera petición en la ventana de tiempo, configuramos el TTL (60 segundos)
                 if (peticiones == 1) {
                     comandosClave.expire(claveLimite, 60);
                 }
 
-                // Si supera las 5 peticiones por minuto, rechazamos con HTTP 429 (Too Many Requests)
                 if (peticiones > 5) {
                     return Response.status(429)
                             .entity(Map.of(
@@ -54,7 +49,7 @@ public class LimitadorTasaFilter {
             }
         }
 
-        return null; // Continuar con la ejecución normal de la petición
+        return null;
     }
 
     private String obtenerIpCliente(ContainerRequestContext contexto) {

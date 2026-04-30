@@ -7,7 +7,6 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import java.net.URI;
 
-// Recibe peticiones en la raíz con el código corto y redirige al usuario a la URL original.
 @Path("/")
 public class RedireccionResource {
 
@@ -18,16 +17,13 @@ public class RedireccionResource {
     @Path("/{codigo}")
     public Response redireccionar(@PathParam("codigo") String codigo, @HeaderParam("User-Agent") String userAgent) {
         try {
-            // Obtenemos el nombre del navegador para guardar analíticas
             String navegador = identificarNavegador(userAgent);
             String urlOriginal = acortarUseCase.obtenerUrlOriginal(codigo, navegador);
 
-            // Intentamos corregir URLs que no tienen el esquema http/https para evitar errores de redirección
             if (!urlOriginal.startsWith("http://") && !urlOriginal.startsWith("https://")) {
                 urlOriginal = "https://" + urlOriginal;
             }
 
-            // Hacemos una redirección temporal HTTP 302
             return Response.temporaryRedirect(URI.create(urlOriginal)).build();
         } catch (EnlaceNoEncontradoException e) {
             return Response.status(Response.Status.NOT_FOUND)
@@ -42,7 +38,6 @@ public class RedireccionResource {
         }
     }
 
-    // Identificación sencilla del navegador basada en el User-Agent
     private String identificarNavegador(String userAgent) {
         if (userAgent == null) {
             return "Otros";

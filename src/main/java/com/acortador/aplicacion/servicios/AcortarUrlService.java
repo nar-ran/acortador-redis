@@ -8,7 +8,6 @@ import com.acortador.dominio.puertos.salida.EnlaceRepositorioPort;
 import java.util.Optional;
 import java.util.UUID;
 
-// Implementación pura de la lógica para acortar enlaces y gestionar redirecciones.
 public class AcortarUrlService implements AcortarUrlUseCase {
 
     private final EnlaceRepositorioPort enlaceRepo;
@@ -21,7 +20,6 @@ public class AcortarUrlService implements AcortarUrlUseCase {
 
     @Override
     public Enlace acortar(String urlOriginal, Long tiempoVidaSegundos) {
-        // Generamos un código aleatorio único de 6 caracteres
         String codigo = generarCodigoUnico();
         Enlace enlace = new Enlace(codigo, urlOriginal, tiempoVidaSegundos);
         
@@ -38,10 +36,7 @@ public class AcortarUrlService implements AcortarUrlUseCase {
 
         Enlace enlace = enlaceOpt.get();
         
-        // Guardamos las métricas en Redis
         analiticasRepo.registrarClic(codigo, navegador);
-        
-        // Notificamos en tiempo real el clic vía Pub/Sub de Redis
         analiticasRepo.publicarActividadClic(codigo, enlace.getUrlOriginal(), navegador);
 
         return enlace.getUrlOriginal();

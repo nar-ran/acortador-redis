@@ -5,7 +5,6 @@ import com.acortador.dominio.modelo.Analitica;
 import com.acortador.dominio.puertos.salida.AnaliticasRepositorioPort;
 import java.util.Map;
 
-// Servicio puro para consultar estadísticas de clics y rankings acumulados en Redis.
 public class ObtenerAnaliticasService implements ObtenerAnaliticasUseCase {
 
     private final AnaliticasRepositorioPort analiticasRepo;

@@ -47,6 +47,13 @@
             <artifactId>quarkus-redis-client</artifactId>
         </dependency>
 
+        <!-- Servidor Redis embebido para desarrollo local sin instalar nada -->
+        <dependency>
+            <groupId>com.github.codemonstur</groupId>
+            <artifactId>embedded-redis</artifactId>
+            <version>1.4.2</version>
+        </dependency>
+
         <!-- Validación de datos -->
         <dependency>
             <groupId>io.quarkus</groupId>

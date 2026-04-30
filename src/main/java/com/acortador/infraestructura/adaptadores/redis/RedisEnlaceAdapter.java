@@ -9,7 +9,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.util.Optional;
 
-// Adaptador que conecta nuestro puerto de salida de enlaces con Redis usando Strings de clave-valor.
 @ApplicationScoped
 public class RedisEnlaceAdapter implements EnlaceRepositorioPort {
 
@@ -25,10 +24,8 @@ public class RedisEnlaceAdapter implements EnlaceRepositorioPort {
     @Override
     public void guardar(Enlace enlace) {
         String clave = obtenerClave(enlace.getCodigo());
-        // Guardamos la URL original bajo la clave "enlace:{codigo}"
         comandosValor.set(clave, enlace.getUrlOriginal());
         
-        // Si el usuario configuró expiración, le aplicamos el TTL a la clave
         if (enlace.tieneExpiracion()) {
             comandosClave.expire(clave, enlace.getTiempoVidaSegundos());
         }
@@ -42,7 +39,6 @@ public class RedisEnlaceAdapter implements EnlaceRepositorioPort {
             return Optional.empty();
         }
         
-        // Consultamos el tiempo de vida restante para retornarlo en el modelo
         long ttl = comandosClave.ttl(clave);
         Enlace enlace = new Enlace(codigo, urlOriginal, ttl > 0 ? ttl : null);
         return Optional.of(enlace);

@@ -6,7 +6,6 @@ import io.smallrye.mutiny.Multi;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-// Adaptador para escuchar notificaciones del canal Pub/Sub de Redis en forma de flujo reactivo.
 @ApplicationScoped
 public class RedisPubSubAdapter {
 
@@ -17,7 +16,6 @@ public class RedisPubSubAdapter {
         this.pubsubReactivo = ds.pubsub(String.class);
     }
 
-    // Escucha de forma reactiva y en segundo plano los mensajes del canal "enlaces:actividad"
     public Multi<String> escucharActividad() {
         return pubsubReactivo.subscribe("enlaces:actividad");
     }

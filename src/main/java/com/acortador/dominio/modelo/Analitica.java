@@ -3,7 +3,6 @@ package com.acortador.dominio.modelo;
 import java.util.HashMap;
 import java.util.Map;
 
-// Guarda las estadísticas de visitas y clics de un enlace acortado.
 public class Analitica {
     private String codigo;
     private long clicsTotales;

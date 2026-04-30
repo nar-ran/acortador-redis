@@ -14,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-// Adaptador que conecta el puerto de analíticas con Redis usando Hashes, Sorted Sets y Pub/Sub.
 @ApplicationScoped
 public class RedisAnaliticasAdapter implements AnaliticasRepositorioPort {
 
@@ -33,13 +32,8 @@ public class RedisAnaliticasAdapter implements AnaliticasRepositorioPort {
     public void registrarClic(String codigo, String navegador) {
         String claveAnaliticas = obtenerClaveAnaliticas(codigo);
 
-        // 1. Incrementamos los clics totales en el Hash del enlace
         comandosHash.hincrby(claveAnaliticas, "total", 1L);
-
-        // 2. Incrementamos los clics para el navegador específico
         comandosHash.hincrby(claveAnaliticas, navegador.toLowerCase(), 1L);
-
-        // 3. Incrementamos la popularidad en el ranking global (Sorted Set)
         comandosZSet.zincrby("enlaces:ranking", 1, codigo);
     }
 
@@ -54,7 +48,6 @@ public class RedisAnaliticasAdapter implements AnaliticasRepositorioPort {
 
         long clicsTotales = datos.getOrDefault("total", 0L);
         
-        // Creamos un mapa exclusivo para los navegadores sin el campo 'total'
         Map<String, Long> clicsPorNavegador = new HashMap<>(datos);
         clicsPorNavegador.remove("total");
 
@@ -63,13 +56,9 @@ public class RedisAnaliticasAdapter implements AnaliticasRepositorioPort {
 
     @Override
     public Map<String, Long> obtenerRankingPopularidad(int limite) {
-        // Obtenemos los elementos con puntuación (ordenados de menor a mayor en el extremo superior)
         List<ScoredValue<String>> ranking = comandosZSet.zrangeWithScores("enlaces:ranking", -limite, -1);
-        
-        // Invertimos el orden para presentarlo de mayor a menor clics
         java.util.Collections.reverse(ranking);
         
-        // Usamos LinkedHashMap para mantener el orden de inserción de mayor a menor clics
         Map<String, Long> resultado = new LinkedHashMap<>();
         for (ScoredValue<String> sv : ranking) {
             resultado.put(sv.value(), (long) sv.score());
@@ -79,7 +68,6 @@ public class RedisAnaliticasAdapter implements AnaliticasRepositorioPort {
 
     @Override
     public void publicarActividadClic(String codigo, String urlOriginal, String navegador) {
-        // Construimos un JSON simple para publicar en el canal
         String mensajeJson = String.format(
             "{\"codigo\":\"%s\",\"urlOriginal\":\"%s\",\"navegador\":\"%s\",\"fecha\":%d}",
             codigo, urlOriginal, navegador, System.currentTimeMillis()
