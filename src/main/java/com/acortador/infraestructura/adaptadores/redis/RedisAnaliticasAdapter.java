@@ -63,8 +63,11 @@ public class RedisAnaliticasAdapter implements AnaliticasRepositorioPort {
 
     @Override
     public Map<String, Long> obtenerRankingPopularidad(int limite) {
-        // Obtenemos los elementos con sus respectivos puntajes de mayor a menor
-        List<ScoredValue<String>> ranking = comandosZSet.zrevrangeWithScores("enlaces:ranking", 0, limite - 1);
+        // Obtenemos los elementos con puntuación (ordenados de menor a mayor en el extremo superior)
+        List<ScoredValue<String>> ranking = comandosZSet.zrangeWithScores("enlaces:ranking", -limite, -1);
+        
+        // Invertimos el orden para presentarlo de mayor a menor clics
+        java.util.Collections.reverse(ranking);
         
         // Usamos LinkedHashMap para mantener el orden de inserción de mayor a menor clics
         Map<String, Long> resultado = new LinkedHashMap<>();

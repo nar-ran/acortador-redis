@@ -10,7 +10,7 @@ import jakarta.inject.Inject;
 @ApplicationScoped
 public class RedisPubSubAdapter {
 
-    private final ReactivePubSubCommands<String, String> pubsubReactivo;
+    private final ReactivePubSubCommands<String> pubsubReactivo;
 
     @Inject
     public RedisPubSubAdapter(ReactiveRedisDataSource ds) {

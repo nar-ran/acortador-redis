@@ -4,7 +4,6 @@ import com.acortador.aplicacion.puertos.entrada.AcortarUrlUseCase;
 import com.acortador.dominio.excepciones.EnlaceNoEncontradoException;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.HeaderParam;
 import jakarta.ws.rs.core.Response;
 import java.net.URI;
 
