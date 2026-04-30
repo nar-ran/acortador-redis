@@ -10,7 +10,7 @@
 
     <div class="contenedor">
         <header>
-            <h1>⚡ Acortador de Enlaces Redis</h1>
+            <h1>Acortador de Enlaces Redis</h1>
             <p>Implementación Premium de Redis (Key-Value con TTL, Sorted Sets, Hashes y Pub/Sub) en Quarkus</p>
         </header>
 
@@ -21,7 +21,7 @@
                 
                 <!-- Tarjeta de Crear Enlace -->
                 <div class="tarjeta" style="margin-bottom: 2rem;">
-                    <h2 class="titulo-tarjeta">🔗 Acortar un Enlace</h2>
+                    <h2 class="titulo-tarjeta">Acortar un Enlace</h2>
                     <form id="formulario-acortar">
                         <div class="grupo-formulario">
                             <label for="urlOriginal">URL Original (Destino):</label>
@@ -31,7 +31,7 @@
                             <label for="tiempoVida">Tiempo de Vida / Expiración (Segundos - Opcional):</label>
                             <input type="number" id="tiempoVida" class="control-input" placeholder="Ej. 60 (para que venza en 1 minuto)" min="1">
                         </div>
-                        <button type="submit" class="btn-premium">⚡ Acortar Enlace</button>
+                        <button type="submit" class="btn-premium">Acortar Enlace</button>
                     </form>
 
                     <div id="resultado" class="resultado-enlace" style="display: none;">
@@ -48,7 +48,7 @@
 
                 <!-- Tarjeta de Consulta de Analíticas -->
                 <div class="tarjeta">
-                    <h2 class="titulo-tarjeta">📊 Métricas por Enlace (Redis Hashes)</h2>
+                    <h2 class="titulo-tarjeta">Métricas por Enlace (Redis Hashes)</h2>
                     <div class="grupo-formulario" style="display: flex; gap: 0.75rem;">
                         <input type="text" id="codigoBuscar" class="control-input" placeholder="Código corto (Ej: abc123)" style="flex: 1;">
                         <button id="btnBuscarAnaliticas" class="btn-premium" style="width: auto; padding: 0.75rem 1.5rem;">Consultar</button>
@@ -66,7 +66,7 @@
                                 <span id="porc-chrome">0% (0 clics)</span>
                             </div>
                             <div class="barra-progreso">
-                                <div id="relleno-chrome" class="barra-relleno" style="background-color: #10b981;"></div>
+                                <div id="relleno-chrome" class="barra-relleno" style="background-color: #f8b2b2;"></div>
                             </div>
                         </div>
 
@@ -77,7 +77,7 @@
                                 <span id="porc-firefox">0% (0 clics)</span>
                             </div>
                             <div class="barra-progreso">
-                                <div id="relleno-firefox" class="barra-relleno" style="background-color: #f97316;"></div>
+                                <div id="relleno-firefox" class="barra-relleno" style="background-color: #af719d;"></div>
                             </div>
                         </div>
 
@@ -88,7 +88,7 @@
                                 <span id="porc-safari">0% (0 clics)</span>
                             </div>
                             <div class="barra-progreso">
-                                <div id="relleno-safari" class="barra-relleno" style="background-color: #3b82f6;"></div>
+                                <div id="relleno-safari" class="barra-relleno" style="background-color: #8b639b;"></div>
                             </div>
                         </div>
 
@@ -99,7 +99,7 @@
                                 <span id="porc-edge">0% (0 clics)</span>
                             </div>
                             <div class="barra-progreso">
-                                <div id="relleno-edge" class="barra-relleno" style="background-color: #06b6d4;"></div>
+                                <div id="relleno-edge" class="barra-relleno" style="background-color: #403d88;"></div>
                             </div>
                         </div>
 
@@ -110,7 +110,7 @@
                                 <span id="porc-otros">0% (0 clics)</span>
                             </div>
                             <div class="barra-progreso">
-                                <div id="relleno-otros" class="barra-relleno" style="background-color: #6b7280;"></div>
+                                <div id="relleno-otros" class="barra-relleno" style="background-color: #5f5b9c;"></div>
                             </div>
                         </div>
                     </div>
@@ -123,7 +123,7 @@
 
                 <!-- Tarjeta Leaderboard Global (Sorted Set) -->
                 <div class="tarjeta" style="margin-bottom: 2rem;">
-                    <h2 class="titulo-tarjeta">🏆 Top Enlaces Más Visitados (ZSets)</h2>
+                    <h2 class="titulo-tarjeta">Top Enlaces Más Visitados (ZSets)</h2>
                     <ul id="lista-ranking" class="lista-ranking">
                         <!-- El ranking se cargará dinámicamente -->
                         <li style="color: var(--text-secondary); text-align: center; padding: 1rem;">No hay clics registrados aún.</li>
@@ -132,7 +132,7 @@
 
                 <!-- Tarjeta Live Click Stream (Pub/Sub) -->
                 <div class="tarjeta">
-                    <h2 class="titulo-tarjeta">📡 Flujo de Actividad en Vivo (Pub/Sub)</h2>
+                    <h2 class="titulo-tarjeta">Flujo de Actividad en Vivo (Pub/Sub)</h2>
                     <div id="contenedor-stream" class="contenedor-stream">
                         <!-- Los clics en vivo aparecerán aquí mediante SSE -->
                         <div style="color: var(--text-secondary); text-align: center; padding: 2rem;">Esperando eventos de clics...</div>
@@ -146,7 +146,7 @@
 
     <!-- Contenedor para notificaciones de error (Rate Limiter) -->
     <div id="toast" class="toast-error" style="display: none;">
-        ¡Límite de peticiones excedido!
+        Límite de peticiones excedido
     </div>
 
     <script src="app.js"></script>
