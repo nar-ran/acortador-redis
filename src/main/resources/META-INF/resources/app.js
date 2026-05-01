@@ -18,6 +18,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let codigoActivo = '';
 
+    // Control de Tema Claro/Oscuro
+    const btnTema = document.getElementById('btn-tema');
+    const temaGuardado = localStorage.getItem('tema') || 'oscuro';
+
+    if (temaGuardado === 'claro') {
+        document.body.classList.add('light-mode');
+        btnTema.textContent = 'Modo Oscuro';
+    } else {
+        btnTema.textContent = 'Modo Claro';
+    }
+
+    btnTema.addEventListener('click', () => {
+        if (document.body.classList.contains('light-mode')) {
+            document.body.classList.remove('light-mode');
+            btnTema.textContent = 'Modo Claro';
+            localStorage.setItem('tema', 'oscuro');
+        } else {
+            document.body.classList.add('light-mode');
+            btnTema.textContent = 'Modo Oscuro';
+            localStorage.setItem('tema', 'claro');
+        }
+    });
+
     // 1. Crear enlace acortado
     formularioAcortar.addEventListener('submit', async (e) => {
         e.preventDefault();
